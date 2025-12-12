@@ -12,11 +12,12 @@ const guessButton = document.getElementById('guessButton');
 const resetButton = document.getElementById('resetButton');
 const resultDisplay = document.getElementById('result');
 const attemptsDisplay = document.getElementById('attempts');
-const difficultySelect = document.getElementById('difficulty');
 const highScoreDisplay = document.getElementById('highScoreDisplay');
 const instructionText = document.querySelector('.instruction');
 const introScreen = document.querySelector('.intro-screen');
 const startButton = document.getElementById('startButton');
+const levelScreen = document.querySelector('.level-selection-screen'); 
+const levelButtons = document.querySelectorAll('.level-btn'); 
 
 // ------------------------------------------
 // LOGIKA HIGH SCORE
@@ -47,15 +48,24 @@ function updateHighScore() {
 // ------------------------------------------
 
 function initializeGame() {
-    maxNumber = parseInt(difficultySelect.value);
+    // maxNumber diatur oleh selectLevel() sebelum fungsi ini dipanggil
     
     secretNumber = Math.floor(Math.random() * maxNumber) + 1;
     attempts = 0;
     
+    // Pastikan layar level disembunyikan
+    levelScreen.classList.remove('show-level-screen');
+    levelScreen.classList.add('hidden-by-default');
+    
+    // Tampilkan container game utama
+    document.querySelector('.container').style.display = 'block';
+
+    // Perbarui label petunjuk dan input placeholder
     instructionText.textContent = `Saya sudah memilih angka antara 1 sampai ${maxNumber}. Coba tebak!`;
     guessInput.setAttribute('max', maxNumber);
     guessInput.placeholder = `Masukkan tebakan Anda (1-${maxNumber})`;
 
+    // Reset tampilan
     resultDisplay.textContent = "Mulai menebak!";
     resultDisplay.style.color = '#333';
     attemptsDisplay.textContent = attempts;
@@ -63,7 +73,6 @@ function initializeGame() {
     guessInput.disabled = false;
     guessButton.style.display = 'inline-block';
     resetButton.style.display = 'none';
-    difficultySelect.disabled = false;
     guessInput.focus();
 }
 
@@ -79,7 +88,6 @@ function checkGuess() {
 
     attempts++;
     attemptsDisplay.textContent = attempts;
-    difficultySelect.disabled = true;
 
     // Hitung selisih absolut untuk logika Panas/Dingin
     const difference = Math.abs(guess - secretNumber);
@@ -135,38 +143,57 @@ function checkGuess() {
     }
     
     resultDisplay.innerHTML = feedbackText;
-    
     guessInput.value = '';
     guessInput.focus();
 }
 
 // ------------------------------------------
-// LOGIKA INTRO DAN DELAY
+// LOGIKA INTRO DAN LEVEL SELECTION
 // ------------------------------------------
 
+// Fungsi Baru: Menangani pilihan level
+function selectLevel(event) {
+    if (event.target.classList.contains('level-btn')) {
+        // Ambil nilai level dari atribut data-level
+        maxNumber = parseInt(event.target.dataset.level);
+        
+        // Sembunyikan layar level
+        levelScreen.classList.remove('show-level-screen');
+        levelScreen.classList.add('hidden-by-default');
+        
+        // Panggil fungsi utama game untuk memulai dengan maxNumber yang baru
+        initializeGame();
+    }
+}
+
+// Fungsi Transisi dari Intro ke Layar Level
 function startGame() {
     // 1. Ubah Teks Tombol dan disable
     startButton.textContent = "🚀 Memuat Game...";
     startButton.disabled = true; 
     startButton.style.backgroundColor = '#4a148c'; 
 
-    // 2. Tunda 400ms untuk menampilkan pesan loading
     setTimeout(() => {
         
-        // 3. Mulai animasi memudar (fade out)
+        // 2. Sembunyikan Intro Screen
         introScreen.classList.add('hidden'); 
         
-        // 4. Tunda 600ms lagi (total 1 detik) untuk menyelesaikan transisi
+        // 3. Tunda sebentar, lalu munculkan Layar Level
         setTimeout(() => {
-            introScreen.style.display = 'none';
+            introScreen.style.display = 'none'; // Sembunyikan permanen
             
-            // Panggil inisialisasi game setelah transisi selesai
-            initializeGame(); 
+            // Tampilkan Layar Seleksi Level
+            levelScreen.classList.remove('hidden-by-default');
+            levelScreen.classList.add('show-level-screen');
+            
+            // Sembunyikan container game utama sampai level dipilih
+            document.querySelector('.container').style.display = 'none';
 
-        }, 600); 
+        }, 600); // Waktu yang sama dengan durasi transisi fade-out
 
-    }, 400); 
+    }, 400); // Durasi pesan loading
 }
+
 
 // ------------------------------------------
 // EVENT LISTENERS
@@ -174,7 +201,9 @@ function startGame() {
 
 guessButton.addEventListener('click', checkGuess);
 resetButton.addEventListener('click', initializeGame);
-difficultySelect.addEventListener('change', initializeGame); 
+
+// Event listener BARU untuk tombol level
+levelScreen.addEventListener('click', selectLevel); 
 
 guessInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' && !guessInput.disabled) {
@@ -182,12 +211,11 @@ guessInput.addEventListener('keydown', (event) => {
     }
 });
 
-// Panggil fungsi inisialisasi saat DOM dimuat
+// Panggil fungsi inisialisasi skor saat DOM dimuat
 document.addEventListener('DOMContentLoaded', () => {
     loadHighScore();
-    // initializeGame tidak dipanggil di sini, karena akan dipanggil oleh startGame()
 });
 
-// Event listener untuk tombol Mulai Game (yang memicu delay dan transisi)
+// Event listener untuk tombol Mulai Game
 startButton.addEventListener('click', startGame);
-                             
+        
