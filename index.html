@@ -18,7 +18,7 @@
             
             <h3>📋 Aturan Main:</h3>
             <ul>
-                <li>Pilih Level (1-50, 1-100, atau 1-1000).</li>
+                <li>Pilih Level (Rentang Angka).</li>
                 <li>Dapatkan petunjuk **Panas** atau **Dingin** (selain Tinggi/Rendah).</li>
                 <li>Raih Skor Terbaik dengan tebakan tersedikit.</li>
             </ul>
@@ -26,18 +26,20 @@
             <button id="startButton">Mulai Game!</button> 
         </div>
     </div>
-    <div class="container">
+
+    <div class="level-selection-screen hidden-by-default">
+        <h2>Pilih Tingkat Kesulitan</h2>
+        <p>Angka misteri akan dipilih berdasarkan rentang yang Anda pilih:</p>
+        <div class="level-buttons">
+            <button data-level="50" class="level-btn">Mudah (1-50)</button>
+            <button data-level="100" class="level-btn">Normal (1-100)</button>
+            <button data-level="1000" class="level-btn">Sulit (1-1000)</button>
+        </div>
+    </div>
+
+    <div class="container" style="display: none;">
         <h1>Tebak Angka Misteri!</h1>
         
-        <div style="margin: 15px 0;">
-            <label for="difficulty">Pilih Level:</label>
-            <select id="difficulty">
-                <option value="50">Mudah (1-50)</option>
-                <option value="100" selected>Normal (1-100)</option>
-                <option value="1000">Sulit (1-1000)</option>
-            </select>
-        </div>
-
         <p id="highScoreDisplay" style="color: #607d8b; font-size: 0.9em;">Skor Terbaik: Belum ada</p>
 
         <p class="instruction">...</p>
