@@ -5,12 +5,12 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #fce4ec; /* Pink Sangat Muda (Background) */
+    background-color: #fce4ec; 
     color: #333; 
     margin: 0;
 }
 .container {
-    background: #ffcdd2; /* Pink Muda (Kotak Game) */
+    background: #ffcdd2; 
     padding: 30px;
     border-radius: 15px; 
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
@@ -75,8 +75,8 @@ button:active {
     color: #4a148c; 
 }
 
-/* --- CSS UNTUK INTRO SCREEN --- */
-.intro-screen {
+/* --- CSS UNTUK INTRO & LEVEL SCREEN --- */
+.intro-screen, .level-selection-screen {
     position: fixed;
     top: 0;
     left: 0;
@@ -85,10 +85,11 @@ button:active {
     background-color: #ffcdd2; 
     z-index: 9999; 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    /* Animasi memudar selama 0.5 detik */
+    /* Durasi transisi 0.5 detik */
     transition: opacity 0.5s ease-out, visibility 0.5s ease-out; 
 }
 
@@ -100,7 +101,7 @@ button:active {
     max-width: 80%;
 }
 
-.intro-content h1 {
+.intro-content h1, .level-selection-screen h2 {
     color: #c2185b;
 }
 
@@ -110,7 +111,7 @@ button:active {
     line-height: 1.8;
 }
 
-#startButton {
+#startButton, .level-buttons button {
     background-color: #4CAF50; 
     color: white;
     font-size: 1.2em;
@@ -118,8 +119,35 @@ button:active {
     margin-top: 20px;
 }
 
-/* Kelas untuk menyembunyikan intro screen */
+/* Kelas untuk menyembunyikan layar */
 .hidden {
     opacity: 0;
     visibility: hidden;
+}
+
+/* Kelas untuk layar level */
+.hidden-by-default {
+    opacity: 0;
+    visibility: hidden;
+    display: none; 
+}
+.show-level-screen {
+    z-index: 9999; /* Pastikan di atas game utama */
+    display: flex; 
+    opacity: 1;
+    visibility: visible;
+}
+
+.level-buttons button {
+    font-size: 1.1em;
+    padding: 15px 25px;
+    margin: 10px;
+    background-color: #c2185b;
+    color: white;
+    border-radius: 10px;
+    transition: background-color 0.2s;
+}
+
+.level-buttons button:hover {
+    background-color: #880e4f;
 }
