@@ -1,5 +1,8 @@
+/* Import Google Fonts: Poppins (Body) dan Great Vibes (Heading) */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600;700&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif; /* Menggunakan Poppins untuk teks umum */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,10 +21,19 @@ body {
     max-width: 400px;
 }
 h1 {
+    font-family: 'Great Vibes', cursive; /* Menggunakan Great Vibes untuk Judul Utama */
+    font-size: 2.5em; /* Perbesar sedikit agar menonjol */
     color: #880e4f; 
     text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
 }
+h2 {
+    font-family: 'Great Vibes', cursive; /* Terapkan juga pada h2 (Level Screen) */
+    font-size: 2em;
+    color: #880e4f;
+}
+
 input[type="number"], select {
+    font-family: 'Poppins', sans-serif;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #e0b0c0;
@@ -39,11 +51,12 @@ select {
     display: inline-block;
 }
 button {
+    font-family: 'Poppins', sans-serif;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600; /* Lebih bold */
     transition: background-color 0.3s, transform 0.1s;
     margin: 5px;
     color: white; 
@@ -68,7 +81,7 @@ button:active {
 #result {
     margin-top: 20px;
     font-size: 1.2em;
-    font-weight: bold;
+    font-weight: 700; /* Bold */
 }
 
 #highScoreDisplay, .instruction, #attempts {
@@ -89,7 +102,6 @@ button:active {
     justify-content: center;
     align-items: center;
     text-align: center;
-    /* Durasi transisi 0.5 detik */
     transition: opacity 0.5s ease-out, visibility 0.5s ease-out; 
 }
 
@@ -119,20 +131,18 @@ button:active {
     margin-top: 20px;
 }
 
-/* Kelas untuk menyembunyikan layar */
 .hidden {
     opacity: 0;
     visibility: hidden;
 }
 
-/* Kelas untuk layar level */
 .hidden-by-default {
     opacity: 0;
     visibility: hidden;
     display: none; 
 }
 .show-level-screen {
-    z-index: 9999; /* Pastikan di atas game utama */
+    z-index: 9999; 
     display: flex; 
     opacity: 1;
     visibility: visible;
