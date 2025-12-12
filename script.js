@@ -15,10 +15,11 @@ const attemptsDisplay = document.getElementById('attempts');
 const difficultySelect = document.getElementById('difficulty');
 const highScoreDisplay = document.getElementById('highScoreDisplay');
 const instructionText = document.querySelector('.instruction');
-
+const introScreen = document.querySelector('.intro-screen');
+const startButton = document.getElementById('startButton');
 
 // ------------------------------------------
-// LOGIKA HIGH SCORE (SKOR TERTINGGI)
+// LOGIKA HIGH SCORE
 // ------------------------------------------
 
 function loadHighScore() {
@@ -99,7 +100,7 @@ function checkGuess() {
         resetButton.style.display = 'inline-block';
         
     } else {
-        // Logika Panas/Dingin berdasarkan jarak
+        // Logika Panas/Dingin
         let hotOrColdClass = '';
         if (difference <= 5) {
             feedbackText = "Mendidih! Anda sangat dekat. ";
@@ -124,8 +125,7 @@ function checkGuess() {
 
         resultDisplay.style.color = hotOrColdClass;
 
-        // --- CLUE TAMBAHAN (GANJIL/GENAP) ---
-        // Clue Ganjil/Genap hanya muncul jika attempts >= 5 dan rentang Normal/Mudah
+        // CLUE TAMBAHAN (GANJIL/GENAP)
         if (attempts === 5 && maxNumber <= 100) { 
             let specificClue = (secretNumber % 2 === 0) ? 
                                "💡 Petunjuk: Angka misteri itu adalah **Genap**." : 
@@ -138,6 +138,34 @@ function checkGuess() {
     
     guessInput.value = '';
     guessInput.focus();
+}
+
+// ------------------------------------------
+// LOGIKA INTRO DAN DELAY
+// ------------------------------------------
+
+function startGame() {
+    // 1. Ubah Teks Tombol dan disable
+    startButton.textContent = "🚀 Memuat Game...";
+    startButton.disabled = true; 
+    startButton.style.backgroundColor = '#4a148c'; 
+
+    // 2. Tunda 400ms untuk menampilkan pesan loading
+    setTimeout(() => {
+        
+        // 3. Mulai animasi memudar (fade out)
+        introScreen.classList.add('hidden'); 
+        
+        // 4. Tunda 600ms lagi (total 1 detik) untuk menyelesaikan transisi
+        setTimeout(() => {
+            introScreen.style.display = 'none';
+            
+            // Panggil inisialisasi game setelah transisi selesai
+            initializeGame(); 
+
+        }, 600); 
+
+    }, 400); 
 }
 
 // ------------------------------------------
@@ -154,8 +182,12 @@ guessInput.addEventListener('keydown', (event) => {
     }
 });
 
-// Panggil fungsi inisialisasi saat halaman dimuat
+// Panggil fungsi inisialisasi saat DOM dimuat
 document.addEventListener('DOMContentLoaded', () => {
     loadHighScore();
-    initializeGame();
+    // initializeGame tidak dipanggil di sini, karena akan dipanggil oleh startGame()
 });
+
+// Event listener untuk tombol Mulai Game (yang memicu delay dan transisi)
+startButton.addEventListener('click', startGame);
+                             
