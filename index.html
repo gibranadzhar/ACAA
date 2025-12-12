@@ -9,6 +9,23 @@
 </head>
 <body>
 
+    <div class="intro-screen">
+        <div class="intro-content">
+            <h1>Selamat Datang di Tebak Angka Super!</h1>
+            <p>Uji kemampuan tebakan Anda dan raih Skor Terbaik!</p>
+            
+            <hr>
+            
+            <h3>📋 Aturan Main:</h3>
+            <ul>
+                <li>Pilih Level (1-50, 1-100, atau 1-1000).</li>
+                <li>Dapatkan petunjuk **Panas** atau **Dingin** (selain Tinggi/Rendah).</li>
+                <li>Raih Skor Terbaik dengan tebakan tersedikit.</li>
+            </ul>
+            
+            <button id="startButton">Mulai Game!</button> 
+        </div>
+    </div>
     <div class="container">
         <h1>Tebak Angka Misteri!</h1>
         
@@ -23,7 +40,9 @@
 
         <p id="highScoreDisplay" style="color: #607d8b; font-size: 0.9em;">Skor Terbaik: Belum ada</p>
 
-        <p class="instruction">...</p> <input type="number" id="guessInput" min="1" max="100" placeholder="Masukkan tebakan Anda">
+        <p class="instruction">...</p>
+
+        <input type="number" id="guessInput" min="1" max="100" placeholder="Masukkan tebakan Anda">
         
         <button id="guessButton">Tebak!</button>
         <button id="resetButton">Main Lagi</button>
