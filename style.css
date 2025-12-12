@@ -6,25 +6,25 @@ body {
     justify-content: center;
     min-height: 100vh;
     background-color: #fce4ec; /* Pink Sangat Muda (Background) */
-    color: #333; /* Warna teks utama tetap gelap agar mudah dibaca */
+    color: #333; 
     margin: 0;
 }
 .container {
     background: #ffcdd2; /* Pink Muda (Kotak Game) */
     padding: 30px;
-    border-radius: 15px; /* Lebih lembut */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Bayangan lebih kuat */
+    border-radius: 15px; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
     text-align: center;
     max-width: 400px;
 }
 h1 {
-    color: #880e4f; /* Maroon/Pink Tua untuk Judul */
+    color: #880e4f; 
     text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
 }
 input[type="number"], select {
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #e0b0c0; /* Border pink yang lebih gelap */
+    border: 1px solid #e0b0c0;
     border-radius: 5px;
     width: calc(100% - 22px);
     box-sizing: border-box; 
@@ -46,20 +46,20 @@ button {
     font-weight: bold;
     transition: background-color 0.3s, transform 0.1s;
     margin: 5px;
-    color: white; /* Teks tombol putih */
+    color: white; 
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 button:active {
-    transform: translateY(1px); /* Efek tombol tertekan */
+    transform: translateY(1px); 
 }
 #guessButton {
-    background-color: #c2185b; /* Pink Tua / Magenta untuk Tebak */
+    background-color: #c2185b; 
 }
 #guessButton:hover {
     background-color: #880e4f;
 }
 #resetButton {
-    background-color: #f44336; /* Merah untuk Reset (Tetap menonjol) */
+    background-color: #f44336; 
     display: none; 
 }
 #resetButton:hover {
@@ -69,10 +69,57 @@ button:active {
     margin-top: 20px;
     font-size: 1.2em;
     font-weight: bold;
-    /* Warna feedback Panas/Dingin diatur di JS */
 }
 
-/* Mengubah warna teks tambahan agar mudah dibaca di background pink */
 #highScoreDisplay, .instruction, #attempts {
-    color: #4a148c; /* Ungu gelap agar kontras */
+    color: #4a148c; 
+}
+
+/* --- CSS UNTUK INTRO SCREEN --- */
+.intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffcdd2; 
+    z-index: 9999; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* Animasi memudar selama 0.5 detik */
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out; 
+}
+
+.intro-content {
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 80%;
+}
+
+.intro-content h1 {
+    color: #c2185b;
+}
+
+.intro-content ul {
+    list-style: none;
+    padding: 0;
+    line-height: 1.8;
+}
+
+#startButton {
+    background-color: #4CAF50; 
+    color: white;
+    font-size: 1.2em;
+    padding: 15px 30px;
+    margin-top: 20px;
+}
+
+/* Kelas untuk menyembunyikan intro screen */
+.hidden {
+    opacity: 0;
+    visibility: hidden;
 }
