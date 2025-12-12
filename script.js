@@ -1,10 +1,10 @@
-// script.js
+// script.js (KODE BARU LENGKAP)
 
 // Variabel Global
 let secretNumber;
 let attempts;
-let maxNumber;
-const gameKey = "guessNumberHighScore"; 
+let maxNumber; // Batas angka saat ini (50, 100, atau 1000)
+const baseGameKey = "guessNumberHighScore"; // Kunci dasar untuk localStorage
 
 // Mendapatkan elemen DOM
 const guessInput = document.getElementById('guessInput');
@@ -20,23 +20,37 @@ const levelScreen = document.querySelector('.level-selection-screen');
 const levelButtons = document.querySelectorAll('.level-btn'); 
 
 // ------------------------------------------
-// LOGIKA HIGH SCORE
+// LOGIKA HIGH SCORE (Diperbarui untuk Level)
 // ------------------------------------------
 
+function getHighScoreKey() {
+    // Menghasilkan kunci unik berdasarkan level saat ini (maxNumber)
+    return `${baseGameKey}_${maxNumber}`;
+}
+
 function loadHighScore() {
-    const score = localStorage.getItem(gameKey);
+    // Ambil skor untuk level saat ini
+    const currentKey = getHighScoreKey();
+    const score = localStorage.getItem(currentKey);
+    let levelName = "";
+    
+    if (maxNumber === 50) levelName = "Mudah";
+    else if (maxNumber === 100) levelName = "Normal";
+    else if (maxNumber === 1000) levelName = "Sulit";
+
     if (score && score !== 'null') {
-        highScoreDisplay.textContent = `Skor Terbaik (Tebakan Terendah): ${score} tebakan.`;
+        highScoreDisplay.innerHTML = `Skor Terbaik Level <b>${levelName}</b>: ${score} tebakan.`;
     } else {
-        highScoreDisplay.textContent = "Skor Terbaik: Belum ada";
+        highScoreDisplay.innerHTML = `Skor Terbaik Level <b>${levelName}</b>: Belum ada`;
     }
 }
 
 function updateHighScore() {
-    let oldScore = parseInt(localStorage.getItem(gameKey));
+    const currentKey = getHighScoreKey();
+    let oldScore = parseInt(localStorage.getItem(currentKey));
 
     if (isNaN(oldScore) || attempts < oldScore) {
-        localStorage.setItem(gameKey, attempts);
+        localStorage.setItem(currentKey, attempts);
         loadHighScore();
         return true; 
     }
@@ -48,16 +62,20 @@ function updateHighScore() {
 // ------------------------------------------
 
 function initializeGame() {
-    maxNumber = parseInt(maxNumber); // Pastikan maxNumber adalah integer
+    maxNumber = parseInt(maxNumber); 
     
     secretNumber = Math.floor(Math.random() * maxNumber) + 1;
     attempts = 0;
     
+    // Panggil loadHighScore agar tampilan skor terbaik sesuai level yang baru
+    loadHighScore(); 
+    
+    // Transisi tampilan
     levelScreen.classList.remove('show-level-screen');
     levelScreen.classList.add('hidden-by-default');
-    
     document.querySelector('.container').style.display = 'block';
 
+    // Reset dan atur tampilan
     instructionText.textContent = `Saya sudah memilih angka antara 1 sampai ${maxNumber}. Coba tebak!`;
     guessInput.setAttribute('max', maxNumber);
     guessInput.placeholder = `Masukkan tebakan Anda (1-${maxNumber})`;
@@ -96,13 +114,13 @@ function checkGuess() {
         
         const isNewRecord = updateHighScore();
         if (isNewRecord) {
-            // PERBAIKAN TANDA ** (bintang ganda)
             feedbackText += '<br><b>🔥 REKOR BARU TERCIPTA!</b>'; 
         }
 
+        // Tampilan akhir
         guessInput.disabled = true;
         guessButton.style.display = 'none';
-        resetButton.style.display = 'inline-block';
+        resetButton.style.display = 'inline-block'; // Tombol Main Lagi Muncul
         
     } else {
         // Logika Panas/Dingin
@@ -133,7 +151,6 @@ function checkGuess() {
         // CLUE TAMBAHAN (GANJIL/GENAP)
         if (attempts === 5 && maxNumber <= 100) { 
             let specificClue = (secretNumber % 2 === 0) ? 
-                               // PERBAIKAN TANDA ** (bintang ganda)
                                "💡 Petunjuk: Angka misteri itu adalah <b>Genap</b>." : 
                                "💡 Petunjuk: Angka misteri itu adalah <b>Ganjil</b>.";
              feedbackText += `<br><span style="color: purple; font-size: 0.9em;">${specificClue}</span>`;
@@ -149,15 +166,29 @@ function checkGuess() {
 // LOGIKA INTRO DAN LEVEL SELECTION
 // ------------------------------------------
 
-// Fungsi Baru: Menangani pilihan level
+// FUNGSI BARU: Kembali ke Layar Seleksi Level setelah menang
+function resetToLevelSelection() {
+    // Reset tampilan attempts
+    attemptsDisplay.textContent = 0;
+    
+    // Sembunyikan container game utama
+    document.querySelector('.container').style.display = 'none';
+    
+    // Tampilkan Layar Seleksi Level
+    levelScreen.classList.remove('hidden-by-default');
+    levelScreen.classList.add('show-level-screen');
+
+    // Sembunyikan tombol reset
+    resetButton.style.display = 'none';
+}
+
+
+// Fungsi untuk memilih level
 function selectLevel(event) {
     if (event.target.classList.contains('level-btn')) {
         maxNumber = parseInt(event.target.dataset.level);
         
-        levelScreen.classList.remove('show-level-screen');
-        levelScreen.classList.add('hidden-by-default');
-        
-        // Panggil fungsi utama game untuk memulai dengan maxNumber yang baru
+        // Panggil inisialisasi game dengan maxNumber yang baru
         initializeGame();
     }
 }
@@ -176,6 +207,12 @@ function startGame() {
         setTimeout(() => {
             introScreen.style.display = 'none'; // Sembunyikan permanen
             
+            // Tentukan maxNumber default (misal Normal) sebelum menampilkan skor
+            maxNumber = 100; 
+            
+            // Panggil loadHighScore() di sini untuk menampilkan skor default (Normal)
+            loadHighScore(); 
+
             // Tampilkan Layar Seleksi Level
             levelScreen.classList.remove('hidden-by-default');
             levelScreen.classList.add('show-level-screen');
@@ -183,9 +220,9 @@ function startGame() {
             // Sembunyikan container game utama sampai level dipilih
             document.querySelector('.container').style.display = 'none';
 
-        }, 600); // Waktu yang sama dengan durasi transisi fade-out
+        }, 600); 
 
-    }, 400); // Durasi pesan loading
+    }, 400); 
 }
 
 // ------------------------------------------
@@ -193,7 +230,8 @@ function startGame() {
 // ------------------------------------------
 
 guessButton.addEventListener('click', checkGuess);
-resetButton.addEventListener('click', initializeGame);
+// Tombol Reset sekarang mengarah ke pemilihan level
+resetButton.addEventListener('click', resetToLevelSelection); 
 levelScreen.addEventListener('click', selectLevel); 
 
 guessInput.addEventListener('keydown', (event) => {
@@ -202,9 +240,11 @@ guessInput.addEventListener('keydown', (event) => {
     }
 });
 
-// Panggil fungsi inisialisasi skor saat DOM dimuat
+// Panggil fungsi inisialisasi skor default (untuk kasus refresh halaman)
 document.addEventListener('DOMContentLoaded', () => {
-    loadHighScore();
+    // Atur maxNumber default untuk tampilan skor di halaman awal jika tidak ada intro
+    maxNumber = 100; 
+    loadHighScore(); 
 });
 
 // Event listener untuk tombol Mulai Game
