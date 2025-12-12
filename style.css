@@ -5,32 +5,34 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: #fce4ec; /* Pink Sangat Muda (Background) */
+    color: #333; /* Warna teks utama tetap gelap agar mudah dibaca */
     margin: 0;
 }
 .container {
-    background: #ffffff;
+    background: #ffcdd2; /* Pink Muda (Kotak Game) */
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; /* Lebih lembut */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Bayangan lebih kuat */
     text-align: center;
     max-width: 400px;
 }
 h1 {
-    color: #4CAF50;
-    margin-bottom: 5px;
+    color: #880e4f; /* Maroon/Pink Tua untuk Judul */
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
 }
 input[type="number"], select {
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ccc;
+    border: 1px solid #e0b0c0; /* Border pink yang lebih gelap */
     border-radius: 5px;
     width: calc(100% - 22px);
     box-sizing: border-box; 
     display: block;
     margin-left: auto;
     margin-right: auto;
+    background-color: #fff;
+    color: #333;
 }
 select {
     width: auto;
@@ -42,19 +44,22 @@ button {
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.1s;
     margin: 5px;
+    color: white; /* Teks tombol putih */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+button:active {
+    transform: translateY(1px); /* Efek tombol tertekan */
 }
 #guessButton {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #c2185b; /* Pink Tua / Magenta untuk Tebak */
 }
 #guessButton:hover {
-    background-color: #45a049;
+    background-color: #880e4f;
 }
 #resetButton {
-    background-color: #f44336;
-    color: white;
+    background-color: #f44336; /* Merah untuk Reset (Tetap menonjol) */
     display: none; 
 }
 #resetButton:hover {
@@ -64,5 +69,10 @@ button {
     margin-top: 20px;
     font-size: 1.2em;
     font-weight: bold;
+    /* Warna feedback Panas/Dingin diatur di JS */
 }
 
+/* Mengubah warna teks tambahan agar mudah dibaca di background pink */
+#highScoreDisplay, .instruction, #attempts {
+    color: #4a148c; /* Ungu gelap agar kontras */
+}
