@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Tebak Angka</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        input[type="number"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        #guessButton {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #guessButton:hover {
+            background-color: #45a049;
+        }
+        #resetButton {
+            background-color: #f44336;
+            color: white;
+            margin-top: 10px;
+            display: none; /* Awalnya disembunyikan */
+        }
+        #resetButton:hover {
+            background-color: #da190b;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Tebak Angka Misteri!</h1>
+        <p>Saya sudah memilih angka antara 1 sampai 100. Coba tebak!</p>
+
+        <input type="number" id="guessInput" min="1" max="100" placeholder="Masukkan tebakan Anda (1-100)">
+        
+        <button id="guessButton">Tebak!</button>
+        <button id="resetButton">Main Lagi</button>
+
+        <p id="result">...</p>
+        <p>Jumlah Tebakan: <span id="attempts">0</span></p>
+    </div>
+
+    <script>
+        // Variabel global
+        let secretNumber;
+        let attempts;
+        const guessInput = document.getElementById('guessInput');
+        const guessButton = document.getElementById('guessButton');
+        const resetButton = document.getElementById('resetButton');
+        const resultDisplay = document.getElementById('result');
+        const attemptsDisplay = document.getElementById('attempts');
+
+        // Fungsi untuk memulai/mengatur ulang permainan
+        function initializeGame() {
+            // Pilih angka acak antara 1 dan 100
+            secretNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            
+            // Atur ulang tampilan
+            resultDisplay.textContent = "Mulai menebak!";
+            attemptsDisplay.textContent = attempts;
+            guessInput.value = '';
+            guessInput.disabled = false;
+            guessButton.style.display = 'inline-block';
+            resetButton.style.display = 'none';
+        }
+
+        // Fungsi untuk memproses tebakan pemain
+        function checkGuess() {
+            const guess = parseInt(guessInput.value);
+
+            // Validasi input
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                resultDisplay.textContent = "Masukkan angka yang valid (1-100)!";
+                return;
+            }
+
+            attempts++;
+            attemptsDisplay.textContent = attempts;
+
+            if (guess === secretNumber) {
+                // KONDISI BENAR
+                resultDisplay.textContent = `🎉 Selamat! Anda benar! Angka misteri itu adalah ${secretNumber}.`;
+                resultDisplay.style.color = '#4CAF50';
+                
+                // Matikan input dan tampilkan tombol reset
+                guessInput.disabled = true;
+                guessButton.style.display = 'none';
+                resetButton.style.display = 'inline-block';
+                
+            } else if (guess < secretNumber) {
+                // KONDISI TERLALU RENDAH
+                resultDisplay.textContent = "Terlalu rendah! Coba lagi.";
+                resultDisplay.style.color = '#f44336';
+            } else {
+                // KONDISI TERLALU TINGGI
+                resultDisplay.textContent = "Terlalu tinggi! Coba lagi.";
+                resultDisplay.style.color = '#2196F3';
+            }
+            
+            // Bersihkan input untuk tebakan berikutnya
+            guessInput.value = '';
+            guessInput.focus();
+        }
+
+        // Event Listeners
+        guessButton.addEventListener('click', checkGuess);
+        resetButton.addEventListener('click', initializeGame);
+        
+        // Memungkinkan tebakan dengan menekan 'Enter' di input
+        guessInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !guessInput.disabled) {
+                checkGuess();
+            }
+        });
+
+        // Panggil fungsi inisialisasi saat halaman dimuat
+        initializeGame();
+
+    </script>
+
+</body>
+</html>
