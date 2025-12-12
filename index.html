@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Tebak Angka</title>
+    <title>Game Tebak Angka - Skor & Level</title>
     
     <link rel="stylesheet" href="style.css"> 
 </head>
@@ -11,9 +11,19 @@
 
     <div class="container">
         <h1>Tebak Angka Misteri!</h1>
-        <p>Saya sudah memilih angka antara 1 sampai 100. Coba tebak!</p>
+        
+        <div style="margin: 15px 0;">
+            <label for="difficulty">Pilih Level:</label>
+            <select id="difficulty">
+                <option value="50">Mudah (1-50)</option>
+                <option value="100" selected>Normal (1-100)</option>
+                <option value="1000">Sulit (1-1000)</option>
+            </select>
+        </div>
 
-        <input type="number" id="guessInput" min="1" max="100" placeholder="Masukkan tebakan Anda (1-100)">
+        <p id="highScoreDisplay" style="color: #607d8b; font-size: 0.9em;">Skor Terbaik: Belum ada</p>
+
+        <p class="instruction">...</p> <input type="number" id="guessInput" min="1" max="100" placeholder="Masukkan tebakan Anda">
         
         <button id="guessButton">Tebak!</button>
         <button id="resetButton">Main Lagi</button>
