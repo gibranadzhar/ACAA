@@ -48,24 +48,20 @@ function updateHighScore() {
 // ------------------------------------------
 
 function initializeGame() {
-    // maxNumber diatur oleh selectLevel() sebelum fungsi ini dipanggil
+    maxNumber = parseInt(maxNumber); // Pastikan maxNumber adalah integer
     
     secretNumber = Math.floor(Math.random() * maxNumber) + 1;
     attempts = 0;
     
-    // Pastikan layar level disembunyikan
     levelScreen.classList.remove('show-level-screen');
     levelScreen.classList.add('hidden-by-default');
     
-    // Tampilkan container game utama
     document.querySelector('.container').style.display = 'block';
 
-    // Perbarui label petunjuk dan input placeholder
     instructionText.textContent = `Saya sudah memilih angka antara 1 sampai ${maxNumber}. Coba tebak!`;
     guessInput.setAttribute('max', maxNumber);
     guessInput.placeholder = `Masukkan tebakan Anda (1-${maxNumber})`;
 
-    // Reset tampilan
     resultDisplay.textContent = "Mulai menebak!";
     resultDisplay.style.color = '#333';
     attemptsDisplay.textContent = attempts;
@@ -100,7 +96,8 @@ function checkGuess() {
         
         const isNewRecord = updateHighScore();
         if (isNewRecord) {
-            feedbackText += '<br>🔥 **REKOR BARU TERCIPTA!**';
+            // PERBAIKAN TANDA ** (bintang ganda)
+            feedbackText += '<br><b>🔥 REKOR BARU TERCIPTA!</b>'; 
         }
 
         guessInput.disabled = true;
@@ -136,8 +133,9 @@ function checkGuess() {
         // CLUE TAMBAHAN (GANJIL/GENAP)
         if (attempts === 5 && maxNumber <= 100) { 
             let specificClue = (secretNumber % 2 === 0) ? 
-                               "💡 Petunjuk: Angka misteri itu adalah **Genap**." : 
-                               "💡 Petunjuk: Angka misteri itu adalah **Ganjil**.";
+                               // PERBAIKAN TANDA ** (bintang ganda)
+                               "💡 Petunjuk: Angka misteri itu adalah <b>Genap</b>." : 
+                               "💡 Petunjuk: Angka misteri itu adalah <b>Ganjil</b>.";
              feedbackText += `<br><span style="color: purple; font-size: 0.9em;">${specificClue}</span>`;
         }
     }
@@ -154,10 +152,8 @@ function checkGuess() {
 // Fungsi Baru: Menangani pilihan level
 function selectLevel(event) {
     if (event.target.classList.contains('level-btn')) {
-        // Ambil nilai level dari atribut data-level
         maxNumber = parseInt(event.target.dataset.level);
         
-        // Sembunyikan layar level
         levelScreen.classList.remove('show-level-screen');
         levelScreen.classList.add('hidden-by-default');
         
@@ -168,17 +164,15 @@ function selectLevel(event) {
 
 // Fungsi Transisi dari Intro ke Layar Level
 function startGame() {
-    // 1. Ubah Teks Tombol dan disable
     startButton.textContent = "🚀 Memuat Game...";
     startButton.disabled = true; 
     startButton.style.backgroundColor = '#4a148c'; 
 
     setTimeout(() => {
         
-        // 2. Sembunyikan Intro Screen
+        // Sembunyikan Intro Screen
         introScreen.classList.add('hidden'); 
         
-        // 3. Tunda sebentar, lalu munculkan Layar Level
         setTimeout(() => {
             introScreen.style.display = 'none'; // Sembunyikan permanen
             
@@ -194,15 +188,12 @@ function startGame() {
     }, 400); // Durasi pesan loading
 }
 
-
 // ------------------------------------------
 // EVENT LISTENERS
 // ------------------------------------------
 
 guessButton.addEventListener('click', checkGuess);
 resetButton.addEventListener('click', initializeGame);
-
-// Event listener BARU untuk tombol level
 levelScreen.addEventListener('click', selectLevel); 
 
 guessInput.addEventListener('keydown', (event) => {
@@ -218,4 +209,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Event listener untuk tombol Mulai Game
 startButton.addEventListener('click', startGame);
-        
