@@ -1,80 +1,77 @@
-// script.js
-
-// Variabel global
-let secretNumber;
-let attempts;
-const guessInput = document.getElementById('guessInput');
-const guessButton = document.getElementById('guessButton');
-const resetButton = document.getElementById('resetButton');
-const resultDisplay = document.getElementById('result');
-const attemptsDisplay = document.getElementById('attempts');
-
-// Fungsi untuk memulai/mengatur ulang permainan
-function initializeGame() {
-    // Pilih angka acak antara 1 dan 100
-    secretNumber = Math.floor(Math.random() * 100) + 1;
-    attempts = 0;
-    
-    // Atur ulang tampilan
-    resultDisplay.textContent = "Mulai menebak!";
-    resultDisplay.style.color = '#333';
-    attemptsDisplay.textContent = attempts;
-    guessInput.value = '';
-    guessInput.disabled = false;
-    guessButton.style.display = 'inline-block';
-    resetButton.style.display = 'none';
-    guessInput.focus(); // Fokuskan kursor ke input
-}
+// ... (Bagian awal script.js tetap sama)
 
 // Fungsi untuk memproses tebakan pemain
 function checkGuess() {
     const guess = parseInt(guessInput.value);
 
-    // Validasi input
-    if (isNaN(guess) || guess < 1 || guess > 100) {
-        resultDisplay.textContent = "Masukkan angka yang valid (1-100)!";
-        resultDisplay.style.color = '#ff9800'; // Warna peringatan
-        return;
+    // ... (Validasi dan penambahan attempts tetap sama)
+    
+    // Pastikan kita masih menebak
+    if (guess !== secretNumber) {
+        attempts++;
+        attemptsDisplay.textContent = attempts;
     }
-
-    attempts++;
-    attemptsDisplay.textContent = attempts;
+    
+    // ... (Logika menang/kalah dan Terlalu Rendah/Tinggi tetap sama)
 
     if (guess === secretNumber) {
-        // KONDISI BENAR
+        // KONDISI BENAR (Tetap sama)
         resultDisplay.textContent = `🎉 Selamat! Anda benar dalam ${attempts} tebakan!`;
         resultDisplay.style.color = '#4CAF50';
-        
-        // Matikan input dan tampilkan tombol reset
         guessInput.disabled = true;
         guessButton.style.display = 'none';
         resetButton.style.display = 'inline-block';
         
     } else if (guess < secretNumber) {
-        // KONDISI TERLALU RENDAH
         resultDisplay.textContent = "Terlalu rendah! Coba lagi.";
         resultDisplay.style.color = '#f44336';
-    } else {
-        // KONDISI TERLALU TINGGI
+        
+    } else { // guess > secretNumber
         resultDisplay.textContent = "Terlalu tinggi! Coba lagi.";
         resultDisplay.style.color = '#2196F3';
     }
+
+    // --- LOGIKA CLUE BARU DIMULAI DI SINI ---
     
-    // Bersihkan input dan fokus untuk tebakan berikutnya
+    if (attempts >= 5 && guess !== secretNumber) {
+        let clue = "";
+        
+        // Clue 1: Apakah angka ganjil atau genap? (Setelah 5 tebakan)
+        if (attempts === 5) {
+            clue = (secretNumber % 2 === 0) ? 
+                   "Petunjuk: Angka misteri itu adalah **Genap**." : 
+                   "Petunjuk: Angka misteri itu adalah **Ganjil**.";
+        } 
+        
+        // Clue 2: Apakah angka di setengah pertama atau kedua (Setelah 8 tebakan)
+        else if (attempts === 8) {
+            clue = (secretNumber <= 50) ? 
+                   "Petunjuk: Angka itu berada di **paruh pertama** (1-50)." :
+                   "Petunjuk: Angka itu berada di **paruh kedua** (51-100).";
+        }
+        
+        // Clue 3: Apakah angka kelipatan dari 5 atau 10? (Setelah 12 tebakan)
+        else if (attempts === 12) {
+             if (secretNumber % 10 === 0) {
+                clue = "Petunjuk: Angka misteri itu **Kelipatan 10**.";
+             } else if (secretNumber % 5 === 0) {
+                clue = "Petunjuk: Angka misteri itu **Kelipatan 5**.";
+             } else {
+                clue = "Petunjuk: Angka misteri itu **bukan kelipatan 5 atau 10**.";
+             }
+        }
+        
+        // Gabungkan petunjuk baru dengan feedback tebakan
+        if (clue) {
+            resultDisplay.innerHTML += `<br><span style="color: purple; font-size: 0.9em;">${clue}</span>`;
+        }
+    }
+
+    // --- LOGIKA CLUE BARU SELESAI DI SINI ---
+    
+    // Bersihkan input dan fokus untuk tebakan berikutnya (Tetap sama)
     guessInput.value = '';
     guessInput.focus();
 }
 
-// Event Listeners (Menghubungkan aksi klik dengan fungsi)
-guessButton.addEventListener('click', checkGuess);
-resetButton.addEventListener('click', initializeGame);
-
-// Memungkinkan tebakan dengan menekan 'Enter'
-guessInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' && !guessInput.disabled) {
-        checkGuess();
-    }
-});
-
-// Panggil fungsi inisialisasi saat halaman dimuat
-document.addEventListener('DOMContentLoaded', initializeGame);
+// ... (Bagian event listeners dan initializeGame tetap sama)
