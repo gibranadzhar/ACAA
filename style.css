@@ -1,18 +1,7 @@
-/* Import Google Fonts: Poppins (Body) dan Great Vibes (Heading) */
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600;700&display=swap');
+/* ... (Bagian atas CSS tetap sama, termasuk @import fonts) ... */
 
-body {
-    font-family: 'Poppins', sans-serif; /* Menggunakan Poppins untuk teks umum */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #fce4ec; 
-    color: #333; 
-    margin: 0;
-}
-.container {
+/* GANTI .container menjadi .game-container */
+.game-container {
     background: #ffcdd2; 
     padding: 30px;
     border-radius: 15px; 
@@ -20,144 +9,31 @@ body {
     text-align: center;
     max-width: 400px;
 }
-h1 {
-    font-family: 'Great Vibes', cursive; /* Menggunakan Great Vibes untuk Judul Utama */
-    font-size: 2.5em; /* Perbesar sedikit agar menonjol */
-    color: #880e4f; 
-    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
-}
-h2 {
-    font-family: 'Great Vibes', cursive; /* Terapkan juga pada h2 (Level Screen) */
-    font-size: 2em;
-    color: #880e4f;
-}
 
-input[type="number"], select {
-    font-family: 'Poppins', sans-serif;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #e0b0c0;
-    border-radius: 5px;
-    width: calc(100% - 22px);
-    box-sizing: border-box; 
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: #fff;
-    color: #333;
-}
-select {
-    width: auto;
-    display: inline-block;
-}
-button {
-    font-family: 'Poppins', sans-serif;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600; /* Lebih bold */
-    transition: background-color 0.3s, transform 0.1s;
-    margin: 5px;
-    color: white; 
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-}
-button:active {
-    transform: translateY(1px); 
-}
-#guessButton {
-    background-color: #c2185b; 
-}
-#guessButton:hover {
-    background-color: #880e4f;
-}
-#resetButton {
-    background-color: #f44336; 
-    display: none; 
-}
-#resetButton:hover {
-    background-color: #da190b;
-}
-#result {
-    margin-top: 20px;
-    font-size: 1.2em;
-    font-weight: 700; /* Bold */
-}
+/* ... (Style H1, H2, Input, Button umum tetap sama) ... */
 
-#highScoreDisplay, .instruction, #attempts {
-    color: #4a148c; 
-}
-
-/* --- CSS UNTUK INTRO & LEVEL SCREEN --- */
-.intro-screen, .level-selection-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #ffcdd2; 
-    z-index: 9999; 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    transition: opacity 0.5s ease-out, visibility 0.5s ease-out; 
-}
-
-.intro-content {
-    background: #fff;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    max-width: 80%;
-}
-
-.intro-content h1, .level-selection-screen h2 {
-    color: #c2185b;
-}
-
-.intro-content ul {
-    list-style: none;
-    padding: 0;
-    line-height: 1.8;
-}
-
-#startButton, .level-buttons button {
-    background-color: #4CAF50; 
-    color: white;
-    font-size: 1.2em;
-    padding: 15px 30px;
-    margin-top: 20px;
-}
-
-.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.hidden-by-default {
-    opacity: 0;
-    visibility: hidden;
-    display: none; 
-}
-.show-level-screen {
-    z-index: 9999; 
-    display: flex; 
-    opacity: 1;
-    visibility: visible;
-}
-
-.level-buttons button {
+/* --- BARU: Gaya Tombol Pilihan Game --- */
+.game-select-buttons button {
     font-size: 1.1em;
     padding: 15px 25px;
-    margin: 10px;
-    background-color: #c2185b;
-    color: white;
-    border-radius: 10px;
-    transition: background-color 0.2s;
-}
-
-.level-buttons button:hover {
+    margin: 5px;
     background-color: #880e4f;
 }
+
+/* --- BARU: Gaya Tombol Suit (RPS) --- */
+.rps-choices {
+    margin-top: 15px;
+}
+.rps-btn {
+    font-size: 1.5em;
+    padding: 15px 15px;
+    margin: 5px;
+    background-color: #c2185b;
+}
+#rpsResetButton {
+    background-color: #f44336; 
+    margin-top: 10px;
+}
+
+/* ... (Sisa CSS Intro/Level Selection tetap sama) ... */
+
