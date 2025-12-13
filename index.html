@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Tebak Angka Super</title>
+    <title>Multi Game Hub - Angka & Suit</title>
     
     <link rel="stylesheet" href="style.css"> 
 </head>
@@ -11,19 +11,17 @@
 
     <div class="intro-screen">
         <div class="intro-content">
-            <h1>Selamat Datang di Tebak Angka Super!</h1>
-            <p>Uji kemampuan tebakan Anda dan raih Skor Terbaik!</p>
+            <h1>Selamat Datang di Multi Game Hub!</h1>
+            <p>Pilih game yang ingin Anda mainkan:</p>
             
             <hr>
             
-            <h3>📋 Aturan Main:</h3>
-            <ul>
-                <li>Pilih Level (Rentang Angka).</li>
-                <li>Dapatkan petunjuk Panas atau Dingin (selain Tinggi/Rendah).</li>
-                <li>Raih Skor Terbaik dengan tebakan tersedikit.</li>
-            </ul>
+            <div class="game-select-buttons">
+                <button id="selectGuessNumber">Tebak Angka</button>
+                <button id="selectRPS">Suit Jepang (B/G/K)</button>
+            </div>
             
-            <button id="startButton">Mulai Game!</button> 
+            <p style="margin-top: 20px;">*Aturan main akan muncul setelah Anda memilih game.</p>
         </div>
     </div>
 
@@ -35,13 +33,13 @@
             <button data-level="100" class="level-btn">Normal (1-100)</button>
             <button data-level="1000" class="level-btn">Sulit (1-1000)</button>
         </div>
+        <button class="back-to-intro-btn">Kembali ke Menu Utama</button>
     </div>
 
-    <div class="container" style="display: none;">
+    <div id="guessNumberContainer" class="game-container" style="display: none;">
         <h1>Tebak Angka Misteri!</h1>
         
         <p id="highScoreDisplay" style="color: #607d8b; font-size: 0.9em;">Skor Terbaik: Belum ada</p>
-
         <p class="instruction">...</p>
 
         <input type="number" id="guessInput" min="1" max="100" placeholder="Masukkan tebakan Anda">
@@ -51,9 +49,28 @@
 
         <p id="result">...</p>
         <p>Jumlah Tebakan: <span id="attempts">0</span></p>
+        
+        <button class="back-to-intro-btn" style="margin-top: 15px;">Kembali ke Menu Utama</button>
+    </div>
+    
+    <div id="rpsContainer" class="game-container" style="display: none;">
+        <h1>Suit Jepang (B/G/K)</h1>
+        <p id="rpsInstruction">Pilih salah satu:</p>
+        
+        <div class="rps-choices">
+            <button data-choice="batu" class="rps-btn">✊ Batu</button>
+            <button data-choice="gunting" class="rps-btn">✌️ Gunting</button>
+            <button data-choice="kertas" class="rps-btn">✋ Kertas</button>
+        </div>
+        
+        <p id="rpsResult" style="margin-top: 20px;">...</p>
+        <p>Skor: <span id="rpsPlayerScore">0</span> - Komputer: <span id="rpsComputerScore">0</span></p>
+
+        <button id="rpsResetButton">Reset Skor</button>
+        <button class="back-to-intro-btn" style="margin-top: 15px;">Kembali ke Menu Utama</button>
     </div>
 
     <script src="script.js"></script> 
-
 </body>
 </html>
+
