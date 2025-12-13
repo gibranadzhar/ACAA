@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Game Hub - Angka & Suit</title>
+    <title>Game AC4BRANN Multi Hub</title>
     
     <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
 
-    <div class="intro-screen">
+    <div id="splashScreen" class="full-screen-layer">
         <div class="intro-content">
-            <h1>Selamat Datang di Multi Game Hub!</h1>
-            <p>Pilih game yang ingin Anda mainkan:</p>
+            <h1>SELAMAT DATANG DI GAME AC4BRANN!</h1>
+            <p style="font-style: italic;">Tekan tombol di bawah untuk memilih permainan.</p>
+            <button id="splashStartButton" style="margin-top: 30px;">Lanjut</button>
+        </div>
+    </div>
+
+    <div id="gameSelectScreen" class="full-screen-layer hidden-by-default">
+        <div class="intro-content">
+            <h2>Pilih Game Anda</h2>
+            <p>Uji kemampuan Anda dalam salah satu permainan berikut:</p>
             
             <hr>
             
@@ -20,12 +28,10 @@
                 <button id="selectGuessNumber">Tebak Angka</button>
                 <button id="selectRPS">Suit Jepang (B/G/K)</button>
             </div>
-            
-            <p style="margin-top: 20px;">*Aturan main akan muncul setelah Anda memilih game.</p>
         </div>
     </div>
 
-    <div class="level-selection-screen hidden-by-default">
+    <div id="levelSelectScreen" class="full-screen-layer hidden-by-default">
         <h2>Pilih Tingkat Kesulitan</h2>
         <p>Angka misteri akan dipilih berdasarkan rentang yang Anda pilih:</p>
         <div class="level-buttons">
@@ -33,9 +39,9 @@
             <button data-level="100" class="level-btn">Normal (1-100)</button>
             <button data-level="1000" class="level-btn">Sulit (1-1000)</button>
         </div>
-        <button class="back-to-intro-btn">Kembali ke Menu Utama</button>
+        <button class="back-to-menu-btn">Kembali ke Pilihan Game</button>
     </div>
-
+    
     <div id="guessNumberContainer" class="game-container" style="display: none;">
         <h1>Tebak Angka Misteri!</h1>
         
@@ -50,7 +56,7 @@
         <p id="result">...</p>
         <p>Jumlah Tebakan: <span id="attempts">0</span></p>
         
-        <button class="back-to-intro-btn" style="margin-top: 15px;">Kembali ke Menu Utama</button>
+        <button class="back-to-menu-btn" style="margin-top: 15px;">Kembali ke Pilihan Game</button>
     </div>
     
     <div id="rpsContainer" class="game-container" style="display: none;">
@@ -67,7 +73,7 @@
         <p>Skor: <span id="rpsPlayerScore">0</span> - Komputer: <span id="rpsComputerScore">0</span></p>
 
         <button id="rpsResetButton">Reset Skor</button>
-        <button class="back-to-intro-btn" style="margin-top: 15px;">Kembali ke Menu Utama</button>
+        <button class="back-to-menu-btn" style="margin-top: 15px;">Kembali ke Pilihan Game</button>
     </div>
 
     <script src="script.js"></script> 
