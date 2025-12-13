@@ -1,17 +1,30 @@
-// script.js (KODE BARU LENGKAP)
+// script.js (KODE BARU LENGKAP DAN DIPERBAIKI)
 
-// Variabel Global
+// Variabel Global Game Tebak Angka
 let secretNumber;
 let attempts;
-let maxNumber; 
+let maxNumber = 100; // Default level
 const baseGameKey = "guessNumberHighScore"; 
 
-// Variabel RPS
+// Variabel Game Suit Jepang (RPS)
 let rpsPlayerScore = 0;
 let rpsComputerScore = 0;
 const rpsChoices = ['batu', 'gunting', 'kertas'];
 
 // Mendapatkan elemen DOM (Diperbarui)
+const splashScreen = document.getElementById('splashScreen');
+const splashStartButton = document.getElementById('splashStartButton');
+const gameSelectScreen = document.getElementById('gameSelectScreen');
+
+const selectGuessNumberButton = document.getElementById('selectGuessNumber'); 
+const selectRPSButton = document.getElementById('selectRPS'); 
+
+const levelSelectScreen = document.getElementById('levelSelectScreen'); 
+const levelButtons = document.querySelectorAll('.level-btn'); 
+
+const guessNumberContainer = document.getElementById('guessNumberContainer'); 
+const rpsContainer = document.getElementById('rpsContainer'); 
+
 const guessInput = document.getElementById('guessInput');
 const guessButton = document.getElementById('guessButton');
 const resetButton = document.getElementById('resetButton');
@@ -20,25 +33,13 @@ const attemptsDisplay = document.getElementById('attempts');
 const highScoreDisplay = document.getElementById('highScoreDisplay');
 const instructionText = document.querySelector('.instruction');
 
-const introScreen = document.querySelector('.intro-screen');
-const startButtonGuessNumber = document.getElementById('selectGuessNumber'); // Tombol Pilih Angka
-const startButtonRPS = document.getElementById('selectRPS'); // Tombol Pilih RPS
-
-const levelScreen = document.querySelector('.level-selection-screen'); 
-const levelButtons = document.querySelectorAll('.level-btn'); 
-
-const guessNumberContainer = document.getElementById('guessNumberContainer'); // Container Game 1
-const rpsContainer = document.getElementById('rpsContainer'); // Container Game 2
-
-// Elemen RPS
 const rpsResultDisplay = document.getElementById('rpsResult');
 const rpsPlayerScoreDisplay = document.getElementById('rpsPlayerScore');
 const rpsComputerScoreDisplay = document.getElementById('rpsComputerScore');
 const rpsButtons = document.querySelectorAll('.rps-btn');
 const rpsResetButton = document.getElementById('rpsResetButton');
 
-// Tombol Kembali
-const backToIntroButtons = document.querySelectorAll('.back-to-intro-btn');
+const backToMenuButtons = document.querySelectorAll('.back-to-menu-btn');
 
 
 // ------------------------------------------
@@ -46,16 +47,28 @@ const backToIntroButtons = document.querySelectorAll('.back-to-intro-btn');
 // ------------------------------------------
 
 function hideAllScreens() {
-    introScreen.style.display = 'none';
-    levelScreen.classList.remove('show-level-screen');
-    levelScreen.classList.add('hidden-by-default');
-    guessNumberContainer.style.display = 'none';
-    rpsContainer.style.display = 'none';
+    // Sembunyikan semua layar penuh dan container game
+    [splashScreen, gameSelectScreen, levelSelectScreen, guessNumberContainer, rpsContainer].forEach(el => {
+        if (el.classList.contains('full-screen-layer')) {
+            el.classList.remove('show-screen');
+            el.classList.add('hidden-by-default');
+        } else {
+            el.style.display = 'none';
+        }
+    });
 }
 
-function showIntroScreen() {
+function showScreen(screenElement) {
     hideAllScreens();
-    introScreen.style.display = 'flex';
+    // Tunda sebentar untuk transisi yang mulus
+    setTimeout(() => {
+        if (screenElement.classList.contains('full-screen-layer')) {
+            screenElement.classList.remove('hidden-by-default');
+            screenElement.classList.add('show-screen');
+        } else {
+            screenElement.style.display = 'block';
+        }
+    }, 100); 
 }
 
 // ------------------------------------------
@@ -93,8 +106,7 @@ function checkRPSWinner(playerChoice) {
 }
 
 function initializeRPS() {
-    hideAllScreens();
-    rpsContainer.style.display = 'block';
+    showScreen(rpsContainer);
     rpsResultDisplay.textContent = "Ayo mulai bermain!";
     rpsResultDisplay.style.color = '#333';
     updateRPSScoreDisplay();
@@ -138,12 +150,10 @@ function initializeGuessNumberGame() {
     secretNumber = Math.floor(Math.random() * maxNumber) + 1;
     attempts = 0;
     
+    // Pindah ke container game utama dan muat skor
+    showScreen(guessNumberContainer);
     loadHighScore(); 
     
-    levelScreen.classList.remove('show-level-screen');
-    levelScreen.classList.add('hidden-by-default');
-    guessNumberContainer.style.display = 'block';
-
     instructionText.textContent = `Saya sudah memilih angka antara 1 sampai ${maxNumber}. Coba tebak!`;
     guessInput.setAttribute('max', maxNumber);
     guessInput.placeholder = `Masukkan tebakan Anda (1-${maxNumber})`;
@@ -159,7 +169,6 @@ function initializeGuessNumberGame() {
 }
 
 function checkGuess() {
-    // ... (Logika checkGuess tetap sama) ...
     const guess = parseInt(guessInput.value);
 
     if (isNaN(guess) || guess < 1 || guess > maxNumber) {
@@ -224,55 +233,40 @@ function checkGuess() {
     guessInput.focus();
 }
 
-// ------------------------------------------
-// LOGIKA TRANSISI (Intro -> Level/Game)
-// ------------------------------------------
-
-// Fungsi Transisi dari Intro ke Layar Level (Tebak Angka)
-function goToLevelSelection() {
-    // 1. Sembunyikan Intro Screen
-    introScreen.classList.add('hidden'); 
-    
-    // 2. Tunda sebentar, lalu munculkan Layar Level
-    setTimeout(() => {
-        introScreen.style.display = 'none'; 
-        
-        // Tentukan maxNumber default (misal Normal) sebelum menampilkan skor
-        maxNumber = 100; 
-        loadHighScore(); // Tampilkan skor default
-
-        // Tampilkan Layar Seleksi Level
-        levelScreen.classList.remove('hidden-by-default');
-        levelScreen.classList.add('show-level-screen');
-        
-    }, 400); // Penundaan 400ms untuk efek "Memuat Game..." singkat
-}
-
 function selectLevel(event) {
     if (event.target.classList.contains('level-btn')) {
         maxNumber = parseInt(event.target.dataset.level);
-        
-        // Panggil fungsi utama game untuk memulai
         initializeGuessNumberGame();
     }
 }
-
 
 // ------------------------------------------
 // EVENT LISTENERS
 // ------------------------------------------
 
-// 1. Pemilihan Game di Layar Intro
-startButtonGuessNumber.addEventListener('click', () => {
-    // Terapkan efek loading di tombol jika perlu, atau langsung transisi
-    goToLevelSelection(); 
+// 1. Splash Screen -> Game Selection
+splashStartButton.addEventListener('click', () => {
+    showScreen(gameSelectScreen);
 });
-startButtonRPS.addEventListener('click', initializeRPS);
 
-// 2. Tombol Aksi Game Tebak Angka
+// 2. Game Selection -> Level Selection (Tebak Angka)
+selectGuessNumberButton.addEventListener('click', () => {
+    // Set maxNumber default sebelum menampilkan level screen
+    maxNumber = 100; 
+    loadHighScore(); 
+    showScreen(levelSelectScreen);
+});
+
+// 3. Game Selection -> RPS Game
+selectRPSButton.addEventListener('click', initializeRPS);
+
+// 4. Game Tebak Angka Actions
 guessButton.addEventListener('click', checkGuess);
-resetButton.addEventListener('click', resetToLevelSelection); 
-levelScreen.addEventListener('click', selectLevel); 
+resetButton.addEventListener('click', () => {
+    // Setelah menang, Main Lagi akan kembali ke Level Selection
+    showScreen(levelSelectScreen); 
+});
+levelSelectScreen.addEventListener('click', selectLevel); 
 
 guessInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' && !guessInput.disabled) {
@@ -280,7 +274,7 @@ guessInput.addEventListener('keydown', (event) => {
     }
 });
 
-// 3. Tombol Aksi Game Suit Jepang
+// 5. Game Suit Jepang Actions
 rpsButtons.forEach(button => {
     button.addEventListener('click', (e) => {
         checkRPSWinner(e.currentTarget.dataset.choice);
@@ -294,19 +288,16 @@ rpsResetButton.addEventListener('click', () => {
     rpsResultDisplay.style.color = '#333';
 });
 
-// 4. Tombol Kembali ke Menu Utama
-backToIntroButtons.forEach(button => {
-    button.addEventListener('click', showIntroScreen);
+// 6. Tombol Kembali ke Menu Utama
+backToMenuButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        showScreen(gameSelectScreen);
+    });
 });
 
-
-// Panggil fungsi inisialisasi skor default saat DOM dimuat
+// 7. Initial Load
 document.addEventListener('DOMContentLoaded', () => {
-    // Atur maxNumber default untuk tampilan skor yang benar jika intro dihilangkan
-    maxNumber = 100; 
-    loadHighScore(); 
-    // Pastikan hanya Intro yang terlihat di awal
     hideAllScreens();
-    introScreen.style.display = 'flex';
+    showScreen(splashScreen);
 });
-        
+
