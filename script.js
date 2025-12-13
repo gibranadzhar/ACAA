@@ -7,14 +7,19 @@ let maxNumber = 100; // Default level
 const baseGameKey = "guessNumberHighScore"; 
 
 // Variabel Game Suit Jepang (RPS)
-let rpsGameMode = 'computer'; // 'computer' atau 'player'
-let rpsCurrentPlayer = 1; // 1 atau 2
+let rpsGameMode = 'computer'; 
+let rpsCurrentPlayer = 1; 
 let rpsPlayerScore1 = 0;
 let rpsPlayerScore2 = 0;
 let rpsPlayer1Choice = null;
 let rpsPlayer2Choice = null;
 
 const rpsChoices = ['batu', 'gunting', 'kertas'];
+const rpsEmojiMap = {
+    'batu': '✊',
+    'gunting': '✌️',
+    'kertas': '✋'
+};
 
 // Mendapatkan elemen DOM
 const splashScreen = document.getElementById('splashScreen');
@@ -32,6 +37,7 @@ const modeVsComputerButton = document.getElementById('modeVsComputer');
 const modeVsPlayerButton = document.getElementById('modeVsPlayer');
 const rpsContainer = document.getElementById('rpsContainer'); 
 const rpsModeDisplay = document.getElementById('rpsModeDisplay');
+const rpsAnimation = document.getElementById('rpsAnimation'); 
 
 const guessInput = document.getElementById('guessInput');
 const guessButton = document.getElementById('guessButton');
@@ -57,7 +63,6 @@ const levelButtons = document.querySelectorAll('.level-btn');
 // ------------------------------------------
 
 function hideAllScreens() {
-    // Sembunyikan semua layar penuh dan container game
     [splashScreen, gameSelectScreen, levelSelectScreen, rpsModeScreen, guessNumberContainer, rpsContainer].forEach(el => {
         if (el && el.classList.contains('full-screen-layer')) {
             el.classList.remove('show-screen');
@@ -70,7 +75,6 @@ function hideAllScreens() {
 
 function showScreen(screenElement) {
     hideAllScreens();
-    // Tunda sebentar untuk transisi yang mulus
     setTimeout(() => {
         if (screenElement && screenElement.classList.contains('full-screen-layer')) {
             screenElement.classList.remove('hidden-by-default');
@@ -108,6 +112,40 @@ function determineRPSWinner(choice1, choice2) {
     }
 }
 
+function showRPSResult() {
+    // Sembunyikan animasi emoji
+    rpsAnimation.style.opacity = 0;
+    rpsAnimation.classList.remove('pulsate');
+    setTimeout(() => {
+        rpsAnimation.style.display = 'none';
+        
+        // Logika Penentuan Pemenang dan Tampilan Hasil
+        const winner = determineRPSWinner(rpsPlayer1Choice, rpsPlayer2Choice);
+        let result = '';
+
+        if (winner === 'seri') {
+            result = `Seri! P1 (${rpsEmojiMap[rpsPlayer1Choice]}) vs P2 (${rpsEmojiMap[rpsPlayer2Choice]}).`;
+            rpsResultDisplay.style.color = '#ff9800';
+        } else if (winner === 'p1') {
+            result = `🎉 Pemain 1 Menang! P1 (${rpsEmojiMap[rpsPlayer1Choice]}) mengalahkan P2 (${rpsEmojiMap[rpsPlayer2Choice]}).`;
+            rpsPlayerScore1++;
+            rpsResultDisplay.style.color = '#4CAF50';
+        } else {
+            result = `🎉 Pemain 2 Menang! P2 (${rpsEmojiMap[rpsPlayer2Choice]}) mengalahkan P1 (${rpsEmojiMap[rpsPlayer1Choice]}).`;
+            rpsPlayerScore2++;
+            rpsResultDisplay.style.color = '#f44336';
+        }
+        
+        // Atur untuk giliran berikutnya
+        rpsInstructionDisplay.textContent = "Giliran Pemain 1. Pilih gerakan Anda:";
+        rpsResultDisplay.innerHTML = result;
+        rpsCurrentPlayer = 1;
+        updateRPSScoreDisplay();
+        
+    }, 200); 
+}
+
+
 function handleRPSChoice(playerChoice) {
     if (rpsGameMode === 'computer') {
         // --- LOGIKA VS KOMPUTER ---
@@ -116,22 +154,23 @@ function handleRPSChoice(playerChoice) {
         let result = '';
 
         if (winner === 'seri') {
-            result = `Seri! Anda (${playerChoice}) dan Komputer (${computerChoice}).`;
+            result = `Seri! Anda (${rpsEmojiMap[playerChoice]}) dan Komputer (${rpsEmojiMap[computerChoice]}).`;
             rpsResultDisplay.style.color = '#ff9800';
         } else if (winner === 'p1') {
-            result = `Anda Menang! Komputer memilih ${computerChoice}.`;
+            result = `Anda Menang! Komputer memilih ${rpsEmojiMap[computerChoice]}.`;
             rpsPlayerScore1++;
             rpsResultDisplay.style.color = '#4CAF50';
         } else {
-            result = `Anda Kalah! Komputer memilih ${computerChoice}.`;
+            result = `Anda Kalah! Komputer memilih ${rpsEmojiMap[computerChoice]}.`;
             rpsPlayerScore2++;
             rpsResultDisplay.style.color = '#f44336';
         }
         rpsInstructionDisplay.textContent = "Pilih lagi:";
         rpsResultDisplay.innerHTML = result;
+        updateRPSScoreDisplay();
 
     } else {
-        // --- LOGIKA VS PEMAIN (1 HP) ---
+        // --- LOGIKA VS PEMAIN (PvP dengan Animasi) ---
         
         if (rpsCurrentPlayer === 1) {
             rpsPlayer1Choice = playerChoice;
@@ -143,28 +182,23 @@ function handleRPSChoice(playerChoice) {
         } else if (rpsCurrentPlayer === 2) {
             rpsPlayer2Choice = playerChoice;
             
-            const winner = determineRPSWinner(rpsPlayer1Choice, rpsPlayer2Choice);
-            let result = '';
-
-            if (winner === 'seri') {
-                result = `Seri! P1 (${rpsPlayer1Choice}) vs P2 (${rpsPlayer2Choice}).`;
-                rpsResultDisplay.style.color = '#ff9800';
-            } else if (winner === 'p1') {
-                result = `Pemain 1 Menang! P1 (${rpsPlayer1Choice}) vs P2 (${rpsPlayer2Choice}).`;
-                rpsPlayerScore1++;
-                rpsResultDisplay.style.color = '#4CAF50';
-            } else {
-                result = `Pemain 2 Menang! P1 (${rpsPlayer1Choice}) vs P2 (${rpsPlayer2Choice}).`;
-                rpsPlayerScore2++;
-                rpsResultDisplay.style.color = '#f44336';
-            }
+            // Tampilkan animasi sebelum hasil
+            rpsInstructionDisplay.textContent = "BENTAR YAH... TANGAN DI ADU!";
+            rpsResultDisplay.innerHTML = "Memproses hasil...";
+            rpsResultDisplay.style.color = '#333';
             
-            rpsInstructionDisplay.textContent = "Giliran Pemain 1. Pilih gerakan Anda:";
-            rpsResultDisplay.innerHTML = result;
-            rpsCurrentPlayer = 1;
+            rpsAnimation.textContent = `${rpsEmojiMap[rpsPlayer1Choice]} vs ${rpsEmojiMap[rpsPlayer2Choice]}`;
+            rpsAnimation.style.display = 'block';
+            
+            setTimeout(() => {
+                rpsAnimation.style.opacity = 1;
+                rpsAnimation.classList.add('pulsate');
+            }, 50);
+
+            // Jeda 3 detik sebelum menampilkan hasil akhir
+            setTimeout(showRPSResult, 3000); 
         }
     }
-    updateRPSScoreDisplay();
 }
 
 function initializeRPS(mode) {
@@ -172,12 +206,12 @@ function initializeRPS(mode) {
     rpsCurrentPlayer = 1;
     rpsPlayer1Choice = null;
     rpsPlayer2Choice = null;
-    
-    // Reset skor untuk mode baru
     rpsPlayerScore1 = 0;
     rpsPlayerScore2 = 0;
     
     showScreen(rpsContainer);
+    rpsAnimation.style.display = 'none'; 
+    rpsAnimation.style.opacity = 0;
     
     if (mode === 'computer') {
         rpsModeDisplay.textContent = "Mode: Player vs Komputer";
@@ -192,9 +226,8 @@ function initializeRPS(mode) {
     updateRPSScoreDisplay();
 }
 
-
 // ------------------------------------------
-// LOGIKA GAME 1: TEBAK ANGKA (Skor & Init)
+// LOGIKA GAME 1: TEBAK ANGKA
 // ------------------------------------------
 
 function getHighScoreKey() {
@@ -324,31 +357,25 @@ function selectLevel(event) {
 // EVENT LISTENERS
 // ------------------------------------------
 
-// 1. Splash Screen -> Game Selection
 splashStartButton.addEventListener('click', () => {
     showScreen(gameSelectScreen);
 });
 
-// 2. Game Selection -> Level Selection (Tebak Angka)
 selectGuessNumberButton.addEventListener('click', () => {
     maxNumber = 100; 
     loadHighScore(); 
     showScreen(levelSelectScreen);
 });
 
-// 3. Game Selection -> RPS Mode Selection
 selectRPSButton.addEventListener('click', () => {
     showScreen(rpsModeScreen);
 });
 
-// 4. RPS Mode Selection -> RPS Game
 modeVsComputerButton.addEventListener('click', () => initializeRPS('computer'));
 modeVsPlayerButton.addEventListener('click', () => initializeRPS('player'));
 
-// 5. Game Tebak Angka Actions
 guessButton.addEventListener('click', checkGuess);
 resetButton.addEventListener('click', () => {
-    // Kembali ke Level Selection setelah menang
     showScreen(levelSelectScreen); 
 });
 levelSelectScreen.addEventListener('click', selectLevel); 
@@ -359,7 +386,6 @@ guessInput.addEventListener('keydown', (event) => {
     }
 });
 
-// 6. Game Suit Jepang Actions
 rpsButtons.forEach(button => {
     button.addEventListener('click', (e) => {
         handleRPSChoice(e.currentTarget.dataset.choice);
@@ -373,16 +399,14 @@ rpsResetButton.addEventListener('click', () => {
     rpsResultDisplay.style.color = '#333';
 });
 
-// 7. Tombol Kembali ke Menu Utama
 backToMenuButtons.forEach(button => {
     button.addEventListener('click', () => {
         showScreen(gameSelectScreen);
     });
 });
 
-// 8. Initial Load
 document.addEventListener('DOMContentLoaded', () => {
     hideAllScreens();
     showScreen(splashScreen);
 });
-
+            
