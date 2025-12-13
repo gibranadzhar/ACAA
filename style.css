@@ -1,26 +1,122 @@
-/* ... (Bagian atas CSS tetap sama, termasuk @import fonts) ... */
+/* Import Google Fonts: Poppins (Body) dan Great Vibes (Heading) */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600;700&display=swap');
 
-/* GANTI .container menjadi .game-container */
+body {
+    font-family: 'Poppins', sans-serif; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #fce4ec; /* Pink Sangat Muda */
+    color: #333; 
+    margin: 0;
+}
 .game-container {
-    background: #ffcdd2; 
+    background: #ffcdd2; /* Pink Muda */
     padding: 30px;
     border-radius: 15px; 
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); 
     text-align: center;
     max-width: 400px;
 }
+h1 {
+    font-family: 'Great Vibes', cursive; 
+    font-size: 2.5em; 
+    color: #880e4f; 
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+}
+h2 {
+    font-family: 'Great Vibes', cursive; 
+    font-size: 2em;
+    color: #880e4f;
+}
 
-/* ... (Style H1, H2, Input, Button umum tetap sama) ... */
+input[type="number"], select {
+    font-family: 'Poppins', sans-serif;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #e0b0c0;
+    border-radius: 5px;
+    width: calc(100% - 22px);
+    box-sizing: border-box; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    color: #333;
+}
+button {
+    font-family: 'Poppins', sans-serif;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600; 
+    transition: background-color 0.3s, transform 0.1s;
+    margin: 5px;
+    color: white; 
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+button:active {
+    transform: translateY(1px); 
+}
+#guessButton, .level-btn, .rps-btn {
+    background-color: #c2185b; 
+}
+#guessButton:hover, .level-btn:hover, .rps-btn:hover {
+    background-color: #880e4f;
+}
+#resetButton, #rpsResetButton {
+    background-color: #f44336; 
+}
+#resetButton:hover, #rpsResetButton:hover {
+    background-color: #da190b;
+}
 
-/* --- BARU: Gaya Tombol Pilihan Game --- */
-.game-select-buttons button {
+#result {
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-weight: 700; 
+}
+
+#highScoreDisplay, .instruction, #attempts {
+    color: #4a148c; 
+}
+
+/* --- FULL SCREEN LAYERS (Splash, Game Select, Level Select) --- */
+.full-screen-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffcdd2; 
+    z-index: 9999; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.intro-content {
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 80%;
+}
+
+.game-select-buttons button, #splashStartButton {
     font-size: 1.1em;
     padding: 15px 25px;
     margin: 5px;
-    background-color: #880e4f;
+    background-color: #4CAF50;
 }
 
-/* --- BARU: Gaya Tombol Suit (RPS) --- */
+/* RPS Styles */
 .rps-choices {
     margin-top: 15px;
 }
@@ -28,12 +124,17 @@
     font-size: 1.5em;
     padding: 15px 15px;
     margin: 5px;
-    background-color: #c2185b;
-}
-#rpsResetButton {
-    background-color: #f44336; 
-    margin-top: 10px;
 }
 
-/* ... (Sisa CSS Intro/Level Selection tetap sama) ... */
+/* Utility Classes */
+.hidden-by-default {
+    opacity: 0;
+    visibility: hidden;
+    display: none; 
+}
+.show-screen {
+    display: flex; 
+    opacity: 1;
+    visibility: visible;
+}
 
