@@ -41,6 +41,16 @@
         </div>
         <button class="back-to-menu-btn">Kembali ke Pilihan Game</button>
     </div>
+
+    <div id="rpsModeScreen" class="full-screen-layer hidden-by-default">
+        <h2>Suit Jepang (B/G/K)</h2>
+        <p>Pilih mode permainan:</p>
+        <div class="level-buttons">
+            <button id="modeVsComputer" class="mode-btn">Vs Komputer</button>
+            <button id="modeVsPlayer" class="mode-btn">Player vs Player (1 HP)</button>
+        </div>
+        <button class="back-to-menu-btn">Kembali ke Pilihan Game</button>
+    </div>
     
     <div id="guessNumberContainer" class="game-container" style="display: none;">
         <h1>Tebak Angka Misteri!</h1>
@@ -61,7 +71,9 @@
     
     <div id="rpsContainer" class="game-container" style="display: none;">
         <h1>Suit Jepang (B/G/K)</h1>
-        <p id="rpsInstruction">Pilih salah satu:</p>
+        <p id="rpsModeDisplay" style="font-weight: bold; color: #880e4f;"></p>
+        
+        <p id="rpsInstruction">...</p>
         
         <div class="rps-choices">
             <button data-choice="batu" class="rps-btn">✊ Batu</button>
@@ -70,7 +82,8 @@
         </div>
         
         <p id="rpsResult" style="margin-top: 20px;">...</p>
-        <p>Skor: <span id="rpsPlayerScore">0</span> - Komputer: <span id="rpsComputerScore">0</span></p>
+        
+        <p>Skor: <span id="rpsPlayerScore1">Pemain 1: 0</span> - <span id="rpsPlayerScore2">Pemain 2/Komputer: 0</span></p>
 
         <button id="rpsResetButton">Reset Skor</button>
         <button class="back-to-menu-btn" style="margin-top: 15px;">Kembali ke Pilihan Game</button>
