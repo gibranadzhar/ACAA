@@ -138,3 +138,26 @@ button:active {
     visibility: visible;
 }
 
+/* --- BARU: Gaya Animasi RPS --- */
+#rpsAnimation {
+    font-size: 4em; 
+    margin: 15px 0;
+    height: 1.2em; 
+    display: none; 
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.pulsate {
+    animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}
+
