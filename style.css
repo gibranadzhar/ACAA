@@ -84,7 +84,7 @@ button:active {
     color: #4a148c; 
 }
 
-/* --- FULL SCREEN LAYERS (Splash, Game Select, Level Select) --- */
+/* --- FULL SCREEN LAYERS (Splash, Game Select, Level Select, Mode Select) --- */
 .full-screen-layer {
     position: fixed;
     top: 0;
@@ -109,7 +109,7 @@ button:active {
     max-width: 80%;
 }
 
-.game-select-buttons button, #splashStartButton {
+.game-select-buttons button, #splashStartButton, .mode-btn {
     font-size: 1.1em;
     padding: 15px 25px;
     margin: 5px;
